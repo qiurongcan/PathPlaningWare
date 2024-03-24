@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 """
 
 class Map:
-    def __init__(self,width,height,show=False,ticks=False):
+    def __init__(self,width,height,mapping=False,show=False,ticks=False):
         # 地图的宽度和长度
         self.width=width
         self.height=height
@@ -19,11 +19,11 @@ class Map:
         self.show=show
         # 是否显示网格的刻度
         self.ticks=ticks
+        if mapping:
+            self.base_map()
 
     # 添加障碍物
     def add_obstacle(self,*args):
-        # print(type(args[0]))
-        # print(type((1,1)))
         if type(args[0])== int:
             x=args[0]
             y=args[1]
@@ -55,6 +55,24 @@ class Map:
             return False
         
     
+    def base_map(self):
+        self.add_obstacle((0,100), (99,100))
+        self.add_obstacle((0,100), (0,1))
+        self.add_obstacle((0,1), (0,100))
+        self.add_obstacle((99,100), (0,100))
+
+        self.add_obstacle((18,23),(0,40))
+        self.add_obstacle((88,83),(0,45))
+        self.add_obstacle((58,63),(55,100))
+        self.add_obstacle((84,100),(84,88))
+        self.add_obstacle((34,39),(30,70))
+
+    def add_path(self,path):
+        for p in path:
+            x0,y0=p
+            self.grid[x0][y0]=0.3
+
+
     def getMap(self):
         """用于获取地图的信息"""
         return self.grid
@@ -80,22 +98,25 @@ class Map:
 if __name__=="__main__":
 
     # 创建一个10x10的地图
-    Mymap = Map(100, 100)
+    Mymap = Map(100, 100,mapping=True)
+
+
 
     # 添加一些障碍物 多个点一次性添加
-    Mymap.add_obstacle((2,3), (2,40))
+    # Mymap.add_obstacle((0,100), (99,100))
+    # Mymap.add_obstacle((0,100), (0,1))
+    # Mymap.add_obstacle((0,1), (0,100))
+    # Mymap.add_obstacle((99,100), (0,100))
 
-    Mymap.add_obstacle((15,33), (70,71))
-
-    # 单个点添加
-    # Mymap.add_obstacle(2, 2)
-    # Mymap.add_obstacle(3, 3)
-    Mymap.add_obstacle(4, 4)
+    # Mymap.add_obstacle((20,21),(0,40))
+    # Mymap.add_obstacle((80,81),(0,45))
+    # Mymap.add_obstacle((59,60),(55,100))
+    # Mymap.add_obstacle((88,100),(85,86))
+    # Mymap.add_obstacle((37,38),(30,70))
 
     mapMsg=Mymap.getMap()
     print(mapMsg)
 
     # 显示地图
     Mymap.display()
-
 
